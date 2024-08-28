@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cryptic Void</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: monospace;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #c {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        #content {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 20, 0, 0.7);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <div id="content">
+        <h1>The Cryptic Void</h1>
+        <p>In the dance of binary, a message hides. Can you unveil the truth?</p>
+    </div>
+    <script>
+    (function(){
+        var c = document.getElementById('c'),
+            x = c.getContext('2d'),
+            w = c.width = window.innerWidth,
+            h = c.height = window.innerHeight,
+            t = 0,
+            s = "VGhlIGtleSB0byB1bmxvY2tpbmcgdGhlIGVuaWdtYSBsaWVzIGluIHRoZSBoZWFydCBvZiB0aGUgdm9pZC4=",
+            k = [7, 13, 17, 19, 23, 29, 31, 37],
+            m = atob(s);
+        
+        function e(t) {
+            return t.split('').map(function(c, i) {
+                return String.fromCharCode(c.charCodeAt(0) ^ k[i % k.length]);
+            }).join('');
+        }
+        
+        function r(){
+            x.fillStyle='rgba(0,0,0,.05)';
+            x.fillRect(0,0,w,h);
+            x.fillStyle='#0f0';
+            x.font='15px monospace';
+            for(var i=0;i<w/15;i++){
+                var v = Math.random() > .8 ? (Math.random() > .5 ? '0' : '1') : ' ';
+                if (v !== ' ') {
+                    x.fillText(v,i*15,t*15);
+                }
+            }
+            t=(t+1)%Math.floor(h/15);
+            requestAnimationFrame(r);
+        }
+        r();
+        
+        setInterval(function(){
+            var c = e(m);
+            console.log(btoa(c));
+        }, 10000);
+    })();
+    </script>
+</body>
+</html>
